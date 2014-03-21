@@ -1,0 +1,32 @@
+version: 1
+formatters:
+  simpleFormater:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: simpleFormater
+    stream: ext://sys.stdout
+  file:
+    class: logging.FileHandler
+    formatter: simpleFormater
+    level: DEBUG
+    filename: ../log/kpi.log
+
+loggers:
+  clogger:
+    level: DEBUG
+    handlers: [console]
+    propagate: no
+  flogger:
+    level: DEBUG
+    handlers: [file]
+    propagate: no
+
+root:
+  level: INFO
+  handlers: [console, file]
+
