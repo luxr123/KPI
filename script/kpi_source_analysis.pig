@@ -196,6 +196,7 @@ STORE kw_pu INTO 'hbase://kpi_search_word' USING
 STORE sub_kw_pu INTO 'hbase://kpi_search_word' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:pv cf:uv cf:ip vis:retpv vis:retuv vis:retip vis:newpv vis:newuv vis:newip');
 
+/*
 STORE ss_prov_total_pu INTO 'hbase://kpi_search_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:pv cf:uv cf:ip vis:retpv vis:retuv vis:retip vis:newpv vis:newuv vis:newip');
 
@@ -213,6 +214,7 @@ STORE ss_city_pu INTO 'hbase://kpi_search_region' USING
 
 STORE sub_ss_city_pu INTO 'hbase://kpi_search_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:pv cf:uv cf:ip vis:retpv vis:retuv vis:retip vis:newpv vis:newuv vis:newip');
+*/
 
 ------------------------
 -- bounce rate  ( 小 -> 大 )
@@ -453,6 +455,7 @@ STORE kw_bounce_rate INTO 'hbase://kpi_search_word' USING
 STORE kw_total_bounce_rate INTO 'hbase://kpi_search_word' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:br vis:retbr vis:newbr');
 
+/*
 STORE sub_ss_city_bounce_rate INTO 'hbase://kpi_search_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:br vis:retbr vis:newbr');
 STORE ss_city_bounce_rate INTO 'hbase://kpi_search_region' USING
@@ -465,6 +468,7 @@ STORE ss_prov_bounce_rate INTO 'hbase://kpi_search_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:br vis:retbr vis:newbr');
 STORE ss_prov_total_bounce_rate INTO 'hbase://kpi_search_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:br vis:retbr vis:newbr');
+*/
 
 STORE sub_ss_bounce_rate INTO 'hbase://kpi_search_engines' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:br vis:retbr vis:newbr');
@@ -590,6 +594,7 @@ STORE kw_avgtime INTO 'hbase://kpi_search_word' USING
 STORE kw_total_avgtime INTO 'hbase://kpi_search_word' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:avgtime vis:retavgtime vis:newavgtime');
 
+/*
 STORE sub_ss_prov_avgtime INTO 'hbase://kpi_search_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:avgtime       vis:retavgtime       vis:newavgtime');
 
@@ -607,6 +612,7 @@ STORE ss_city_avgtime INTO 'hbase://kpi_search_region' USING
 
 STORE ss_city_total_avgtime INTO 'hbase://kpi_search_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:avgtime       vis:retavgtime       vis:newavgtime');
+*/
 
 -------------------------------------------外部链接-----------------------------------------------------------------------------------------------------
 -----------
@@ -687,11 +693,13 @@ STORE wb_total_pu INTO 'hbase://kpi_out_link' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage (
                     'cf:pv       cf:uv       cf:ip       vis:retpv       vis:retuv       vis:retip       vis:newpv       vis:newuv       vis:newip');
 
+/*
 STORE wb_prov_total_pu INTO 'hbase://kpi_out_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:pv cf:uv cf:ip vis:retpv vis:retuv vis:retip vis:newpv vis:newuv vis:newip');
 
 STORE wb_city_total_pu INTO 'hbase://kpi_out_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:pv cf:uv cf:ip vis:retpv vis:retuv vis:retip vis:newpv vis:newuv vis:newip');
+*/
 
 ------------------------
 -- bounce rate  ( 小 -> 大 )
@@ -785,10 +793,12 @@ wb_total_bounce_rate     =  foreach joinWBTotalBounce {       pv = wb_total_pu::
                                                                       myFloat((float)newbc/newpv);};
 
 ----   入库hbase
+/*
 STORE wb_city_total_bounce_rate INTO 'hbase://kpi_out_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:br vis:retbr vis:newbr');
 STORE wb_prov_total_bounce_rate INTO 'hbase://kpi_out_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:br vis:retbr vis:newbr');
+*/
 STORE sub_wb_bounce_rate INTO 'hbase://kpi_out_link' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:br vis:retbr vis:newbr');
 STORE wb_bounce_rate INTO 'hbase://kpi_out_link' USING
@@ -846,10 +856,12 @@ wb_city_total_avgtime   =  foreach groupWBCityTotalPT { FRet  = filter $1 by new
                                         (long) AVG(FNew.page_avg_time);};
 
 ----   入库hbase
+/*
 STORE wb_prov_total_avgtime INTO 'hbase://kpi_out_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:avgtime vis:retavgtime vis:newavgtime');
 STORE wb_city_total_avgtime INTO 'hbase://kpi_out_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:avgtime vis:retavgtime vis:newavgtime');
+*/
 
 STORE sub_wb_avgtime INTO 'hbase://kpi_out_link' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:avgtime vis:retavgtime vis:newavgtime');
@@ -909,11 +921,13 @@ STORE ref_total_pu INTO 'hbase://kpi_direct_access' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage (
                     'cf:pv       cf:uv       cf:ip       vis:retpv       vis:retuv       vis:retip       vis:newpv       vis:newuv       vis:newip');
 
+/*
 STORE ref_prov_total_pu INTO 'hbase://kpi_direct_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:pv cf:uv cf:ip vis:retpv vis:retuv vis:retip vis:newpv vis:newuv vis:newip');
 
 STORE ref_city_total_pu INTO 'hbase://kpi_direct_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:pv cf:uv cf:ip vis:retpv vis:retuv vis:retip vis:newpv vis:newuv vis:newip');
+*/
 
 ------------------------
 -- bounce rate  ( 小 -> 大 )
@@ -974,11 +988,13 @@ ref_total_bounce_rate     =  foreach joinRefTotalBounce {     pv = ref_total_pu:
                                                                        myFloat((float)newbc/newpv);};
 
 ----   入库hbase
+/*
 STORE ref_city_total_bounce_rate INTO 'hbase://kpi_direct_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:br vis:retbr vis:newbr');
 
 STORE ref_prov_total_bounce_rate INTO 'hbase://kpi_direct_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:br vis:retbr vis:newbr');
+*/
 
 STORE ref_total_bounce_rate INTO 'hbase://kpi_direct_access' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:br vis:retbr vis:newbr');
@@ -1020,9 +1036,10 @@ ref_city_total_avgtime  =  foreach groupRefCityTotalPT { FRet  = filter $1 by ne
 STORE ref_total_avgtime INTO 'hbase://kpi_direct_access' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:avgtime       vis:retavgtime       vis:newavgtime');
 
+/*
 STORE ref_prov_total_avgtime INTO 'hbase://kpi_direct_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:avgtime vis:retavgtime vis:newavgtime');
 
 STORE ref_city_total_avgtime INTO 'hbase://kpi_direct_region' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:avgtime vis:retavgtime vis:newavgtime');
-
+*/

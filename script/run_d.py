@@ -110,9 +110,9 @@ def main(t_day):
     if pt != 0:
         run_cmd('hadoop fs -mkdir -p ' + output_path + '/PageTimeLength')
 
-    acc = run_cmd('hadoop fs -test -e ' + output_path + '/HeatMap')
-    if acc != 0:
-        run_cmd('hadoop fs -mkdir -p ' + output_path + '/HeatMap')
+#    acc = run_cmd('hadoop fs -test -e ' + output_path + '/HeatMap')
+#    if acc != 0:
+#        run_cmd('hadoop fs -mkdir -p ' + output_path + '/HeatMap')
 
     ads = run_cmd('hadoop fs -test -e ' + output_path + '/Ads')
     if ads != 0:

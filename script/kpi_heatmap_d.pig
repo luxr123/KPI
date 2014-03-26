@@ -12,12 +12,14 @@ define myConcat com.jobs.pig.udf.ConcatUDF;
 ------------------------------------- Thermal Page ---------------------------------------------
 ------------------------------------------------------------------------------------------------
 
+/*
 C  =  load '$inputHeat' using PigStorage('`') as (page:chararray, click:chararray);
 groupPageClk        =  group C by (page, click);
 --page_clk_count      =  foreach groupPageClk {count = COUNT($1); key = myConcat($time, count, $0.page, $0.click); generate key, count as count;};
 page_clk_count      =  foreach groupPageClk generate myConcat($time, $0.page, $0.click), COUNT($1);
 STORE page_clk_count INTO 'hbase://kpi_heatmap' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:count');
+*/
 
 ------------------------------------------------------------------------------------------------
 ------------------------------------- Hot Link Page --------------------------------------------
