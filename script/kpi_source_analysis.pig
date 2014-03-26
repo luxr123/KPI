@@ -578,17 +578,11 @@ ss_city_total_avgtime  =  foreach groupSSCityTotalPT { FRet  = filter $1 by new 
                                         (long) AVG(FNew.page_avg_time);};
 ----   入库hbase
 STORE sub_ss_avgtime INTO 'hbase://kpi_search_engines' USING
-    org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:avgtime       vis:retavgtime       vis:newavgtime 
-                                                       cf:other:avgtime vis:other:retavgtime vis:other:newavgtime 
-                                                       cf:china:avgtime vis:china:retavgtime vis:china:newavgtime');
+    org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:avgtime       vis:retavgtime       vis:newavgtime');
 STORE ss_avgtime INTO 'hbase://kpi_search_engines' USING
-    org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:avgtime       vis:retavgtime       vis:newavgtime
-                                                       cf:other:avgtime vis:other:retavgtime vis:other:newavgtime
-                                                       cf:china:avgtime vis:china:retavgtime vis:china:newavgtime');
+    org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:avgtime       vis:retavgtime       vis:newavgtime');
 STORE ss_total_avgtime INTO 'hbase://kpi_search_engines' USING
-    org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:avgtime       vis:retavgtime       vis:newavgtime
-                                                       cf:other:avgtime vis:other:retavgtime vis:other:newavgtime
-                                                       cf:china:avgtime vis:china:retavgtime vis:china:newavgtime');
+    org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:avgtime       vis:retavgtime       vis:newavgtime');
 STORE sub_kw_avgtime INTO 'hbase://kpi_search_word' USING
     org.apache.pig.backend.hadoop.hbase.HBaseStorage ('cf:avgtime vis:retavgtime vis:newavgtime');
 STORE kw_avgtime INTO 'hbase://kpi_search_word' USING
@@ -665,7 +659,7 @@ wb_prov_total_pu         =  foreach groupWBProvTotalPU {    FA = filter $1 by ne
                                                             ip = distinct $1.ip;          wid = distinct $1.wid;
                                       retpv = COUNT(FA); retuv = COUNT(retWid);         retip = COUNT(retIP);
                                          pv = COUNT($1);    uv = COUNT(wid);               ip = COUNT(ip);
-                                generate myConcat($time, $0.domain, '', '', $0.province, '') as domain,
+                                generate myConcat($time, $0.domain, $0.province, '') as domain,
                                                                     pv as pv,                  uv as uv,                  ip as ip,
                                                                  retpv as retpv,            retuv as retuv,            retip as retip,
                                                           (pv - retpv) as newpv,     (uv - retuv) as newuv,     (ip - retip) as newip ;};
@@ -677,7 +671,7 @@ wb_city_total_pu         =  foreach groupWBCityTotalPU {    FA = filter $1 by ne
                                                             ip = distinct $1.ip;          wid = distinct $1.wid;
                                       retpv = COUNT(FA); retuv = COUNT(retWid);         retip = COUNT(retIP);
                                          pv = COUNT($1);    uv = COUNT(wid);               ip = COUNT(ip);
-                                generate myConcat($time, $0.domain, '', '', $0.province, $0.city) as domain,
+                                generate myConcat($time, $0.domain, $0.province, $0.city) as domain,
                                                                     pv as pv,                  uv as uv,                  ip as ip,
                                                                  retpv as retpv,            retuv as retuv,            retip as retip,
                                                           (pv - retpv) as newpv,     (uv - retuv) as newuv,     (ip - retip) as newip ;};
@@ -709,7 +703,7 @@ filterWBCityTotalWidAdv  =  foreach filterWBCityTotalWid generate $0.domain as d
 
 groupWBCityTotalOne        =  group filterWBCityTotalWidAdv by (domain, province, city);
 wb_city_total_one_count    =  foreach groupWBCityTotalOne { FA = filter $1 by new is null; bc = COUNT($1); retbc = COUNT(FA); newbc = bc - retbc;
-                                    generate myConcat($time, $0.domain, '', '', $0.province, $0.city) as domain,
+                                    generate myConcat($time, $0.domain, $0.province, $0.city) as domain,
                                                                                                         bc as count, retbc as retcount, newbc as newcount ;};
 wb_city_total_bounce_rate  =  foreach ( join wb_city_total_one_count by domain, wb_city_total_pu by domain ) 
                                                             {    pv = wb_city_total_pu::pv;       bc = wb_city_total_one_count::count;
@@ -725,7 +719,7 @@ filterWBProvTotalWidAdv  =  foreach filterWBProvTotalWid generate $0.domain as d
 
 groupWBProvTotalOne        =  group filterWBProvTotalWidAdv by (domain, province);
 wb_prov_total_one_count    =  foreach groupWBProvTotalOne { FA = filter $1 by new is null; bc = COUNT($1); retbc = COUNT(FA); newbc = bc - retbc;
-                                    generate myConcat($time, $0.domain, '', '', $0.province, '') as domain,
+                                    generate myConcat($time, $0.domain, $0.province, '') as domain,
                                                                                                         bc as count, retbc as retcount, newbc as newcount ;};
 wb_prov_total_bounce_rate  =  foreach ( join wb_prov_total_one_count by domain, wb_prov_total_pu by domain ) 
                                                             {    pv = wb_prov_total_pu::pv;       bc = wb_prov_total_one_count::count;
@@ -838,7 +832,7 @@ wb_total_avgtime         =  foreach groupWBTotalPT { FRet  = filter $1 by new  i
 -- 搜索引擎下的省(直辖市)全部
 groupWBProvTotalPT      =  group B3 by (domain, province);
 wb_prov_total_avgtime   =  foreach groupWBProvTotalPT { FRet  = filter $1 by new  is null; FNew  = filter $1 by new  is not null;
-                                generate myConcat($time, $0.domain, '', '', $0.province, '') as domain,
+                                generate myConcat($time, $0.domain, $0.province, '') as domain,
                                         (long) AVG($1.page_avg_time),
                                         (long) AVG(FRet.page_avg_time),
                                         (long) AVG(FNew.page_avg_time);};
@@ -846,7 +840,7 @@ wb_prov_total_avgtime   =  foreach groupWBProvTotalPT { FRet  = filter $1 by new
 -- 搜索引擎下的市(直辖区)全部
 groupWBCityTotalPT      =  group filterWBCityPT by (domain, province, city);
 wb_city_total_avgtime   =  foreach groupWBCityTotalPT { FRet  = filter $1 by new  is null; FNew  = filter $1 by new  is not null;
-                                generate myConcat($time, $0.domain, '', '', $0.province, $0.city) as domain,
+                                generate myConcat($time, $0.domain, $0.province, $0.city) as domain,
                                         (long) AVG($1.page_avg_time),
                                         (long) AVG(FRet.page_avg_time),
                                         (long) AVG(FNew.page_avg_time);};
@@ -893,7 +887,7 @@ ref_prov_total_pu         =  foreach (group A5 by (domain, province)) {    FA = 
                                                             ip = distinct $1.ip;    wid = distinct $1.wid;
                                       retpv = COUNT(FA); retuv = COUNT(retWid);   retip = COUNT(retIP);
                                          pv = COUNT($1);    uv = COUNT(wid);         ip = COUNT(ip);
-                                generate myConcat($time, $0.domain, '', '', $0.province, '') as domain,
+                                generate myConcat($time, $0.domain, $0.province, '') as domain,
                                                                     pv as pv,              uv as uv,              ip as ip,
                                                                  retpv as retpv,        retuv as retuv,        retip as retip,
                                                           (pv - retpv) as newpv, (uv - retuv) as newuv, (ip - retip) as newip ;};
@@ -905,7 +899,7 @@ ref_city_total_pu         =  foreach groupRefCityTotalPU {    FA = filter $1 by 
                                                             ip = distinct $1.ip;    wid = distinct $1.wid;
                                       retpv = COUNT(FA); retuv = COUNT(retWid);   retip = COUNT(retIP);
                                          pv = COUNT($1);    uv = COUNT(wid);         ip = COUNT(ip);
-                                generate myConcat($time, $0.domain, '', '', $0.province, $0.city) as domain,
+                                generate myConcat($time, $0.domain, $0.province, $0.city) as domain,
                                                                     pv as pv,              uv as uv,              ip as ip,
                                                                  retpv as retpv,        retuv as retuv,        retip as retip,
                                                           (pv - retpv) as newpv, (uv - retuv) as newuv, (ip - retip) as newip ;};
@@ -931,7 +925,7 @@ filterRefCityTotalWidAdv  =  foreach filterRefCityTotalWid generate $0.domain as
 
 groupRefCityTotalOne        =  group filterRefCityTotalWidAdv by (domain, province, city);
 ref_city_total_one_count    =  foreach groupRefCityTotalOne { FA = filter $1 by new is null; bc = COUNT($1); retbc = COUNT(FA); nerefc = bc - retbc;
-                                    generate myConcat($time, $0.domain, '', '', $0.province, $0.city) as domain,
+                                    generate myConcat($time, $0.domain, $0.province, $0.city) as domain,
                                                                                                         bc as count, retbc as retcount, nerefc as newcount ;};
 ref_city_total_bounce_rate  =  foreach ( join ref_city_total_one_count by domain, ref_city_total_pu by domain )
                                                             {    pv = ref_city_total_pu::pv;       bc = ref_city_total_one_count::count;
@@ -948,7 +942,7 @@ filterRefProvTotalWidAdv  =  foreach filterRefProvTotalWid generate $0.domain as
 
 groupRefProvTotalOne        =  group filterRefProvTotalWidAdv by (domain, province);
 ref_prov_total_one_count    =  foreach groupRefProvTotalOne { FA = filter $1 by new is null; bc = COUNT($1); retbc = COUNT(FA); nerefc = bc - retbc;
-                                    generate myConcat($time, $0.domain, '', '', $0.province, '') as domain,
+                                    generate myConcat($time, $0.domain, $0.province, '') as domain,
                                                                                                         bc as count, retbc as retcount, nerefc as newcount ;};
 ref_prov_total_bounce_rate  =  foreach ( join ref_prov_total_one_count by domain, ref_prov_total_pu by domain )
                                                             {    pv = ref_prov_total_pu::pv;       bc = ref_prov_total_one_count::count;
@@ -1009,7 +1003,7 @@ ref_total_avgtime        =  foreach groupRefTotalPT { FRet  = filter $1 by new  
 -- 搜索引擎下的省(直辖市)全部
 groupRefProvTotalPT     =  group B5 by (domain, province);
 ref_prov_total_avgtime  =  foreach groupRefProvTotalPT { FRet  = filter $1 by new  is null; FNew  = filter $1 by new  is not null;
-                               generate myConcat($time, $0.domain, '', '', $0.province, '') ,
+                               generate myConcat($time, $0.domain, $0.province, '') ,
                                        (long) AVG($1.page_avg_time),
                                        (long) AVG(FRet.page_avg_time),
                                        (long) AVG(FNew.page_avg_time);};
@@ -1017,7 +1011,7 @@ ref_prov_total_avgtime  =  foreach groupRefProvTotalPT { FRet  = filter $1 by ne
 -- 搜索引擎下的市(直辖区)全部
 groupRefCityTotalPT     =  group filterRefCityPT by (domain, province, city);
 ref_city_total_avgtime  =  foreach groupRefCityTotalPT { FRet  = filter $1 by new  is null; FNew  = filter $1 by new  is not null;
-                               generate myConcat($time, $0.domain, '', '', $0.province, $0.city) ,
+                               generate myConcat($time, $0.domain, $0.province, $0.city) ,
                                        (long) AVG($1.page_avg_time),
                                        (long) AVG(FRet.page_avg_time),
                                        (long) AVG(FNew.page_avg_time);};
