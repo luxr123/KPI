@@ -74,8 +74,11 @@ public class Constants {
 	
 	
 	
-	public static final String IP_FILE = "qqwry.dat";					    	// 纯真IP数据库名
-	public static final String INSTALL_DIR = "/home/hadoop/lu/kpi/lib";		    // 纯真IP数据库的存放路径
+	public static final String HDFS_IP_FILE = 
+			"hdfs://10.100.2.2:54310/qqwry.dat";							// 纯真IP数据库名
+	public static String IP_FILE = "qqwry.dat";   								// 纯真IP数据库名
+	public static final String INSTALL_DIR = 
+			"/home/hadoop/hadoop/tmp/nm-local-dir/usercache/hadoop/appcache";   // 纯真IP数据库的存放路径
 //	public static final String INSTALL_DIR = "e:";					    		// 纯真IP数据库的存放路径
 	
 }

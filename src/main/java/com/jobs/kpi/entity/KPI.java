@@ -7,7 +7,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.jobs.ip.entity.IPLocation;
 import com.jobs.kpi.constants.Constants;
-import com.jobs.kpi.constants.KPIConstants;
 import com.jobs.kpi.ip.service.IPSeeker;
 import com.jobs.utils.KPIUtil;
 
@@ -101,10 +100,10 @@ public class KPI {
 		KPI kpi = KPIUtil.parser(line);
 		if (kpi == null) 
 			return null;
-		if (KPIConstants.VC.equals(kpi.getM_job_page()))
-			return kpi;
+//		if (KPIConstants.VC.equals(kpi.getM_job_page()))
+//			return kpi;
 		String dom = kpi.getM_domain();
-		if (KPIUtil.domainSet.contains(dom)) 
+		if (KPIUtil.domainSet.contains(dom))
 			return kpi;
 		return null;
 	}
@@ -394,13 +393,15 @@ public class KPI {
 		this.m_ip_location = m_ip_location;
 	}
 	
-	/*public static void main(String[] args) throws Exception {
-		String s = "10.100.50.10002014-02-25 16:00:00GET/5a.gif?wb=1&cd=24&ck=1&la=zh-CN&ws=1440x900&"
-				+ "re=http%3a%2f%2fmy.51job.com%2fmy%2f100000%2fMy_Pmc.php%3fid%3d10000000&"
-				+ "u=http%3a%2f%2fmy.51job.com%2fmy%2f100000%2fMy_Pmc.php%3fid%3d10000000&"
-				+ "id=www&st=1393315196986&lnt=3261&cn=0&hot=[{x:272.5,y:615,t:b}]2000http://my.51job.com/my/100000/My_Pmc.php?id=10000000Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0wid=5ef03619a7eb3d2dba8e615bbfd6b0277a9aa126; enter=0";
+	public static void main(String[] args) throws Exception {
+//		String s = "10.100.50.10002014-02-25 16:00:00GET/5a.gif?wb=1&cd=24&ck=1&la=zh-CN&ws=1440x900&"
+//				+ "re=http%3a%2f%2fmy.51job.com%2fmy%2f100000%2fMy_Pmc.php%3fid%3d10000000&"
+//				+ "u=http%3a%2f%2fmy.51job.com%2fmy%2f100000%2fMy_Pmc.php%3fid%3d10000000&"
+//				+ "id=www&st=1393315196986&lnt=3261&cn=0&hot=[{x:272.5,y:615,t:b}]2000http://my.51job.com/my/100000/My_Pmc.php?id=10000000Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0wid=5ef03619a7eb3d2dba8e615bbfd6b0277a9aa126; enter=0";
+		String s = "1.25.96.002014-01-07 09:15:06GET/5a.gif?cd=24&ck=1&la=zh-CN&ws=1440x900&re=&id=xy&st=1389057306113&u=http://192.168.159.100/circle/hot_circle.php2000http://192.168.159.100/circle/hot_circle.phpMozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Firefox/24.0wid=5ef03619a7eb3d2dba8e615bbfd6b0277a9aa126; enter=0";
+		
 		KPI kpi = KPI.filterDomain(s);
 		System.out.println(kpi.getBasicField());
-	}*/
+	}
 
 }

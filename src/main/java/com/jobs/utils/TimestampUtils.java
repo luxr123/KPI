@@ -53,8 +53,13 @@ public class TimestampUtils {
 	
 	public static String Date2String(Date arg){
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
-		
 		return format.format(arg);
+	}
+	
+	public static long Date2Timestamp(String arg) throws ParseException{
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+		String date = Date2String(format.parse(arg));
+		return Timestamp.valueOf(date).getTime();
 	}
 
 	public static void main(String[] args) throws Exception{
@@ -63,6 +68,8 @@ public class TimestampUtils {
 		System.out.println(Date2String(new Date()));
 		
 		System.out.println(formatDuring(38707));
+		
+		System.out.println(Date2Timestamp("2014-04-15 10:53"));
 	}
 
 }

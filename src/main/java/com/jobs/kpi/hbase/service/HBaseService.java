@@ -52,7 +52,7 @@ public class HBaseService {
 
 	static HBaseDao hBaseDao = null;
 
-	public static Map<String,HashSet<String>> config_domain;
+	public static Map<String,HashSet<String>> config_domain; //缓存hbase配置
 	
 	private static Scan scan;
 	
@@ -159,10 +159,10 @@ public class HBaseService {
 	}
 
 	@SuppressWarnings("unused")
-	private double getValue(String tableName, String rowkey) throws IOException {
+	private Object getValue(String tableName, String rowkey) throws IOException {
 
 		long ts1 = System.currentTimeMillis();
-		double value = 0;
+		Object value = 0;
 		HTable table = new HTable(configuration, tableName);
 		Get g = new Get(rowkey.getBytes());
 		Result rs = table.get(g);
@@ -171,7 +171,7 @@ public class HBaseService {
 			System.out.print(new String(kv.getFamily()) + ":");// 列簇名
 			System.out.print(new String(kv.getQualifier()) + "  ");// 列名
 			System.out.print(kv.getTimestamp() + "  ");// 时间戳
-			value = Double.valueOf(kv.getValue().toString());
+			value = kv.getValue().toString();
 		}
 
 		long ts2 = System.currentTimeMillis();
@@ -187,5 +187,6 @@ public class HBaseService {
 	 */
 	public static void main(String[] args) throws Throwable {
 		System.out.println(HBaseService.config_domain);
+		
 	}
 }

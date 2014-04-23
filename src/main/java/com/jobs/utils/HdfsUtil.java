@@ -9,6 +9,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
@@ -44,6 +45,10 @@ public final class HdfsUtil {
 			String path = Config.HDFS_ROOT + p;
 			FileSystem fs = FileSystem.get(URI.create(p), conf);
 			fs.delete(new Path(path), true);
+			FSDataInputStream fsDataInputStream = fs.open(new Path(path));
+			fsDataInputStream.seek(4);
+			fsDataInputStream.readByte();
+			fsDataInputStream.getPos();
 		}
 	}
 

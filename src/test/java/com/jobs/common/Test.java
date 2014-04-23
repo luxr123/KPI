@@ -1,5 +1,6 @@
 package com.jobs.common;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
@@ -13,5 +14,7 @@ public class Test {
 		System.out.println(URLDecoder.decode(s,"UTF-8"));
 		
 		System.out.println(Bytes.toString("\\xE5\\xB9\\xBF\\xE4\\xB8\\x9C".getBytes("utf-16")));
+		
+		System.out.println(new File("e:/qqwry.dat").getName().toLowerCase());
 	}
 }
