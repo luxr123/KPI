@@ -80,8 +80,8 @@ def main(t_day):
     ##    hadoop archive 压缩
     cmd = hadoop_bin + ' archive -archiveName ' + harlog_name + ' -p ' + input_path + ' ' + hadoop_harlog
     try:
-        if run_cmd(cmd) == 0:
-            run_cmd(hadoop_bin + ' fs -rm -r ' + input_path)
+        if run_cmd(cmd) == 0: pass
+            #run_cmd(hadoop_bin + ' fs -rm -r ' + input_path)
         else:
             raise Exception(cmd)
     except Exception as ex:

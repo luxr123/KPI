@@ -5,10 +5,10 @@ import pexpect
 import os, sys, string, time, datetime, traceback
 from multiprocessing import Process
  
-#cmds= '''zookeeper/zookeeper-3.4.5/bin/zkServer.sh start'''
-#cmds= '''ps aux | grep -i "pig" | awk '{print $2}' | xargs kill -9'''
+#cmds= '''zookeeper/zookeeper-3.4.5/bin/zkServer.sh stop'''
+cmds= '''ps aux | grep -i "java" | awk '{print $2}' | xargs kill -9'''
 #cmds= '''rm -rf hadoop/hadoop-2.2.0/logs/*,rm -rf hbase/hbase-0.94/logs/*'''
-cmds= '''rm -rf hbase/hbase-0.94/logs/*'''
+#cmds= '''rm -rf hbase/hbase-0.94/logs/*'''
 #cmds= '''rm -rf zookeeper/data/version-2'''
 #cmds= '''rm -rf zookeeper/data/version-2,rm -rf hadoop/name/*,rm -rf hadoop/date/*,rm -rf hadoop/tmp/*'''
 #cmds= '''rm -rf hadoop/name/*,rm -rf hadoop/data/*,rm -rf hadoop/tmp/*,rm -rf hadoop/hadoop-2.2.0/logs/*,rm -rf zookeeper/data/version-2,rm -rf zookeeper/log/*,rm -rf hbase/hbase-0.94/logs/*'''
